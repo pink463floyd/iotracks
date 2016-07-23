@@ -2,6 +2,10 @@
 FROM python:2
 
 #RUN apk add --update python python-dev py-pip build-base
+apt-get update
+apt-get install build-essential
+apt-get install vim 
+
 RUN pip install --upgrade pip
 RUN pip install virtualenv
 RUN pip install iofabric
