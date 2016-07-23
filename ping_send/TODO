@@ -1,3 +1,4 @@
 docker build -t iotracks/catalog:ping_send .
 docker run -it  iotracks/catalog:ping_send
+docker push iotracks/catalog:ping_send
 
