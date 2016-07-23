@@ -2,9 +2,9 @@
 FROM python:2
 
 #RUN apk add --update python python-dev py-pip build-base
-apt-get update
-apt-get install build-essential
-apt-get install vim 
+RUN apt-get update
+RUN apt-get install -y build-essential
+RUN apt-get install -y vim 
 
 RUN pip install --upgrade pip
 RUN pip install virtualenv
@@ -15,3 +15,5 @@ COPY . /src
 #CMD ["printenv"]
 #CMD ["/bin/bash"]
 CMD ["python", "/src/ping_send.py"]
+#CMD ["python", "/src/idle.py"]
+
