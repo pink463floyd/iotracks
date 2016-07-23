@@ -19,6 +19,10 @@ if 'SELFNAME' in os.environ:
 
 print(CONTAINER_ID)
 
+ao = open("bar.txt", "wb")
+ao.write( "Python 2 is a great language.\nYeah its great!!\n");
+ao.close()
+
 class IoFabricListener:
 
   def onConnected(self):
@@ -33,6 +37,12 @@ class IoFabricListener:
   def onUpdateConfig(self, new_config):
    print(new_config);
    config=new_config;
+   fo = open("foo.txt", "wb")
+   fo.write( "Python is a great language.\nYeah its great!!\n");
+   fo.write(new_config);
+   fo.write( "Python is a great language.\nYeah its great!!\n");
+   fo.close()
+
 
 
 print("6")
