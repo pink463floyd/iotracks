@@ -1,0 +1,10 @@
+docker build -t iotracks/catalog:ping_rcv .
+docker push iotracks/catalog:ping_rcv
+
+#useful from cloud linux server
+docker logs ef828c8186e1
+docker exec -it ef828c8186e1 /bin/bash
+
+
+#only useful to run native on OS-X
+docker run -it  iotracks/catalog:ping_send
