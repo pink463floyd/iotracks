@@ -1,9 +1,9 @@
 FROM alpine:latest
-RUN apk add --update python python-dev py-pip build-base
-RUN pip install --upgrade pip
-RUN pip install virtualenv
-RUN pip install iofabric
-RUN pip install ws4py
+
+RUN apk add --update nodejs
+RUN apk add --update nmap
 COPY . /src
-CMD ["python", "/src/ping_send.py"]
+RUN cd /src; npm install
+
+CMD ["node","/src/linksysIPcamera.js"]
 

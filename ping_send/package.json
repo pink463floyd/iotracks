@@ -1,0 +1,15 @@
+{
+  "name": "Linksys-WVC80N-camera",
+  "version": "1.0.0",
+  "description": "Grabs Linksys IP camera's (WVC80N) data and posts it as a message to ioFabric.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iotracks/ioelement-containers-ga.git"
+  },
+  "author": "IOTRACKS",
+  "license": "ISC",
+  "dependencies": {
+    "http": "0.0.0",
+    "@iotracks/container-sdk-nodejs": "1.1.x"
+  }
+}

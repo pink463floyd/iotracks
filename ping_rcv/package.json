@@ -1,0 +1,15 @@
+{
+  "name": "JsonRestApi",
+  "version": "1.0.4",
+  "description": "Receives messages and stores them. Provides REST API for outside systems to get the messages on request.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iotracks/ioelement-containers-ga.git"
+  },
+  "author": "IOTRACKS",
+  "license": "ISC",
+  "dependencies": {
+    "http": "0.0.0",
+    "@iotracks/container-sdk-nodejs": "1.1.x"
+    }
+}

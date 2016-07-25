@@ -47,7 +47,7 @@ msgClient = iofabric.client.Client(uri, listener, CONTAINER_ID);
 msgClient.connect();
 ctlClient = iofabric.client.Client(uri + CONTAINER_ID, listener, CONTAINER_ID);
 ctlClient.connect();
-
+'''
 while True:
     print("sleeping");
     time.sleep(2);
@@ -57,3 +57,4 @@ while True:
     response = urllib2.urlopen(req)
 
     print(json.loads(response.read()))
+'''
