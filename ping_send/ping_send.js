@@ -32,7 +32,10 @@ ioFabricClient.init('iofabric', 54321, null,
             },
             {
                 'onMessages':
-                    function(messages) {/* don't need to send message on connect */},
+                    function(messages) {
+                        console.log("PING SEND rcv'd message");
+                        console.log(messages);
+                    },
                 'onMessageReceipt':
                     function(messageId, timestamp) {/* message was sent successfully */},
                 'onError':
