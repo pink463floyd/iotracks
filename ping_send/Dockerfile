@@ -5,5 +5,5 @@ RUN apk add --update nmap
 COPY . /src
 RUN cd /src; npm install
 
-CMD ["node","/src/linksysIPcamera.js"]
+CMD ["node","/src/ping_send.js"]
 
