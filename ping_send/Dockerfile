@@ -12,6 +12,7 @@ RUN pip install iofabric
 RUN pip install ws4py
 
 COPY . /src
+COPY client.py /usr/local/lib/python2.7/site-packages/iofabric/client.py
 #CMD ["printenv"]
 #CMD ["/bin/bash"]
 CMD ["python", "/src/ping_send.py"]

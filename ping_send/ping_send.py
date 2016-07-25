@@ -8,6 +8,9 @@ import os
 print("4")
 import time
 print("5")
+import urllib2
+import json
+
 
 confg=None
 msgClient=None
@@ -19,25 +22,32 @@ if 'SELFNAME' in os.environ:
 
 print(CONTAINER_ID)
 
-ao = open("bar.txt", "wb")
-ao.write( "Python 2 is a great language.\nYeah its great!!\n");
-ao.close()
 
 class IoFabricListener:
 
   def onConnected(self):
+    print("CONNECTED");
+    bo = open("connected.txt", "wb")
+    bo.write( "CONNECTED\n");
+    bo.close()
     return
 
   def onClosed(self):
+    print("CLOSED");
     return
 
   def onMessage(self, msg):
+    co = open("message.txt", "wb")
+    co.write( "message\n");
+    co.close()
+    print("MESSAGE");
     print msg
 
   def onUpdateConfig(self, new_config):
+   print("CONFIG");
    print(new_config);
    config=new_config;
-   fo = open("foo.txt", "wb")
+   fo = open("config.txt", "wb")
    fo.write( "Python is a great language.\nYeah its great!!\n");
    fo.write(new_config);
    fo.write( "Python is a great language.\nYeah its great!!\n");
@@ -65,7 +75,7 @@ print("12")
 ctlClient.connect();
 print("13")
 
-
+sendCount=0;
 content ="{\"payload\" : \"abcd\"}";
 while True:
     print(content);
@@ -75,4 +85,14 @@ while True:
     msg.infotype="ctrl/ping";
     msg.infoformat="integer/Byte";
     msg.contentdata=content;
+    msgClient.send_message(msg);
+    go = open("send.txt", "wb")
+    sendCount = sendCount + 1;
+    go.write( "Python is a great language:(%d)\nYeah its great!!\n" % sendCount);
+    print( "Python is a great language:(%d)\nYeah its great!!\n" % sendCount);
+    req = urllib2.Request("http://" + host + ":54321/v2/config/get", "{\"id\":\"" + CONTAINER_ID + "\"}", {'Content-Type': 'application/json'})
+    response = urllib2.urlopen(req)
+    print(json.loads(response.read()))
+
+    go.close();
 
