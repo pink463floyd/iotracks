@@ -41,6 +41,7 @@ ioFabricClient.init('iofabric', 54321, null,
                         var rcv_timestamp = d.getTime()
                         console.log("Received reply. Sequence number:%d. RTT:%d ms", messages[0].sequencenumber, rcv_timestamp - send_timestamp);
                         //console.log(messages);
+                        send_timestamp = 0; //This allows us to detect a timeout.
                     },
                 'onMessageReceipt':
                     function(messageId, timestamp) {/* message was sent successfully */},
@@ -86,10 +87,16 @@ function fetchConfig() {
     );
 }
 
+function checkForTimeOut() {
+  if (send_timestamp != 0) {
+    console.log("Request timeout for sequence number: %d", sequenceNo);
+    send_timestamp = 0;
+  }
+}
 var main = function() {
     clearInterval(periodicJob);
-    var imagedataScott = "26";
-    sendMessage(Buffer(imagedataScott, 'binary'));
+    checkForTimeOut();
+    sendMessage(Buffer("", 'binary'));
     periodicJob = setInterval(main, intervalMsec);
 }
 
