@@ -30,7 +30,8 @@ ioFabricClient.init('iofabric', 54321, null,
                 'onMessages':
                     function onMessagesSocket(messages) {
                          var imagedataScott = "26";
-                         console.log("got message");
+                         console.log("GoT message(s):len=%d", messages.length);
+                         console.log(typeof messages);
                          console.log(messages);
                          sendMessage(messages);
 
