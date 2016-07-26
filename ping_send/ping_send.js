@@ -10,6 +10,7 @@ var wsMessageConnected = false;
 var periodicJob;
 var send_timestamp;
 var intervalMsec = 2000;
+var sequenceNo=0;
 
 ioFabricClient.init('iofabric', 54321, null,
     function() {
@@ -40,9 +41,10 @@ ioFabricClient.init('iofabric', 54321, null,
                     function(messages) {
                         var d=new Date()
                         var rcv_timestamp = d.getTime()
-                        console.log("PING SEND rcv'd message");
                         console.log( rcv_timestamp - send_timestamp);
+                        console.log("rcv'd message BEGIN-------------------");
                         console.log(messages);
+                        console.log("rcv'd message END-------------------");
                     },
                 'onMessageReceipt':
                     function(messageId, timestamp) {/* message was sent successfully */},
@@ -102,11 +104,12 @@ var main = function() {
 
 
 function sendMessage(contentData) {
+    sequenceNo = sequenceNo + 1;
     var ioMsg = ioFabricClient.ioMessage(
         {
             'tag': '',
             'groupid': '',
-            'sequencenumber': 1,
+            'sequencenumber': sequenceNo,
             'sequencetotal': 1,
             'priority': 0,
             'authid': '',
@@ -123,6 +126,9 @@ function sendMessage(contentData) {
         }
     );
     console.log("build msg");
+    console.log("built message BEG-------------------");
+    console.log(ioMsg);
+    console.log("built message END-------------------");
     if(wsMessageConnected) { 
         console.log("send msg");
         var d = new Date()
