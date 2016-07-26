@@ -6,7 +6,9 @@ const capturemodeList = ['photo','videostream'];
 var frequency = 1000;
 var currentConfig;
 var IP_ADDRESS;
-var wsMessageConnected;
+var wsMessageConnected = false;
+var periodicJob;
+var send_timestamp;
 
 ioFabricClient.init('iofabric', 54321, null,
     function() {
@@ -28,12 +30,17 @@ ioFabricClient.init('iofabric', 54321, null,
             function(ioFabricClient) {
                 console.log("CONNECTED");
                 wsMessageConnected = true;
-                main();
+                if (periodicJob==undefined) {
+                   periodicJob = setInterval(function(){main();},2000)
+                }
             },
             {
                 'onMessages':
                     function(messages) {
+                        var d=new Date()
+                        var rcv_timestamp = d.getTime()
                         console.log("PING SEND rcv'd message");
+                        console.log( rcv_timestamp - send_timestamp);
                         console.log(messages);
                     },
                 'onMessageReceipt':
@@ -85,23 +92,8 @@ function fetchConfig() {
 
 function main() {
     var imagedataScott = "26";
-    console.log("sleeping");
     sendMessage(Buffer(imagedataScott, 'binary'));
-    if(currentConfig && wsMessageConnected && currentConfig.username && currentConfig.password) {
-        var capturemode = currentConfig.capturemode;
-        if (capturemode && capturemodeList.indexOf(capturemode) <= -1) {
-            capturemode = capturemodeList[1];
-        }
-        if (capturemodeList.indexOf(capturemode) === 1) {
-            getCameraData(capturemode);
-        } else {
-            setInterval(
-                function getCameraPhotoWithInterval() {
-                    getCameraData(capturemode);
-                },
-                frequency);
-        }
-    }
+    console.log("sent");
 }
 
 function sendMessage(contentData) {
@@ -128,6 +120,10 @@ function sendMessage(contentData) {
     console.log("build msg");
     if(wsMessageConnected) { 
         console.log("send msg");
+        var d = new Date()
+        send_timestamp = d.getTime()
         ioFabricClient.wsSendMessage(ioMsg);
+        console.log(send_timestamp);
     }
 }
+
