@@ -14,7 +14,6 @@ var sequenceNo=0;
 
 ioFabricClient.init('iofabric', 54321, null,
     function() {
-        console.log("INIT");
         fetchConfig();
         ioFabricClient.wsControlConnection(
             {
@@ -30,7 +29,6 @@ ioFabricClient.init('iofabric', 54321, null,
         );
         ioFabricClient.wsMessageConnection(
             function(ioFabricClient) {
-                console.log("CONNECTED");
                 wsMessageConnected = true;
                 if (periodicJob==undefined) {
                   periodicJob = setInterval(main,intervalMsec)
@@ -41,10 +39,8 @@ ioFabricClient.init('iofabric', 54321, null,
                     function(messages) {
                         var d=new Date()
                         var rcv_timestamp = d.getTime()
-                        console.log( rcv_timestamp - send_timestamp);
-                        console.log("rcv'd message BEGIN-------------------");
-                        console.log(messages);
-                        console.log("rcv'd message END-------------------");
+                        console.log("Received reply. Sequence number:%d. RTT:%d ms", messages[0].sequencenumber, rcv_timestamp - send_timestamp);
+                        //console.log(messages);
                     },
                 'onMessageReceipt':
                     function(messageId, timestamp) {/* message was sent successfully */},
@@ -69,13 +65,11 @@ function fetchConfig() {
                 function onGetNewConfig(config) {
                     try {
                         if(config) {
-                            console.log(config);
+                            //console.log(config);
                             if (JSON.stringify(config) !== JSON.stringify(currentConfig)) {
-                                console.log("Stringify");
                                 currentConfig = config;
                                 if(currentConfig.interval_sec) {
-                                    console.log("intervalSec:");
-                                    console.log(currentConfig.interval_sec);
+                                    console.log("Setting ping interval to:%d seconds", currentConfig.interval_sec);
                                     intervalMsec = currentConfig.interval_sec * 1000;
                                 }
                             }
@@ -96,9 +90,6 @@ var main = function() {
     clearInterval(periodicJob);
     var imagedataScott = "26";
     sendMessage(Buffer(imagedataScott, 'binary'));
-    console.log("sent");
-
-    console.log(intervalMsec);
     periodicJob = setInterval(main, intervalMsec);
 }
 
@@ -125,16 +116,12 @@ function sendMessage(contentData) {
             'contentdata' : contentData
         }
     );
-    console.log("build msg");
-    console.log("built message BEG-------------------");
-    console.log(ioMsg);
-    console.log("built message END-------------------");
+    //console.log(ioMsg);
     if(wsMessageConnected) { 
-        console.log("send msg");
+        console.log("Sending ping. Sequence number:%d.", sequenceNo);
         var d = new Date()
         send_timestamp = d.getTime()
         ioFabricClient.wsSendMessage(ioMsg);
-        console.log(send_timestamp);
     }
 }
 
