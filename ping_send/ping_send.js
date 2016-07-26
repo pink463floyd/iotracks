@@ -9,11 +9,16 @@ var IP_ADDRESS;
 var wsMessageConnected = false;
 var periodicJob;
 var send_timestamp;
+var intervalMsec = 2000;
 
 ioFabricClient.init('iofabric', 54321, null,
     function() {
         console.log("INIT");
         fetchConfig();
+        console.log(intervalMsec);
+        if (periodicJob==undefined) {
+           periodicJob = setInterval(function(){main();},intervalMsec)
+        }
         ioFabricClient.wsControlConnection(
             {
                 'onNewConfigSignal':
@@ -30,9 +35,9 @@ ioFabricClient.init('iofabric', 54321, null,
             function(ioFabricClient) {
                 console.log("CONNECTED");
                 wsMessageConnected = true;
-                if (periodicJob==undefined) {
-                   periodicJob = setInterval(function(){main();},2000)
-                }
+                //if (periodicJob==undefined) {
+                  // periodicJob = setInterval(function(){main();},intervalMsec)
+                //}
             },
             {
                 'onMessages':
@@ -69,13 +74,10 @@ function fetchConfig() {
                             console.log(config);
                             if (JSON.stringify(config) !== JSON.stringify(currentConfig)) {
                                 currentConfig = config;
-                                if(currentConfig.frequency) {
-                                    frequency = currentConfig.frequency;
+                                if(currentConfig.intervalSec) {
+                                    console.log(currentConfig.intervalSec);
+                                    intervalMsec = intervalSec * 1000;
                                 }
-                                if(currentConfig.ip) {
-                                    IP_ADDRESS = currentConfig.ip;
-                                }
-                                main();
                             }
                         }
                     } catch (error) {
