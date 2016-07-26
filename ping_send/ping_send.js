@@ -15,10 +15,6 @@ ioFabricClient.init('iofabric', 54321, null,
     function() {
         console.log("INIT");
         fetchConfig();
-        console.log(intervalMsec);
-        if (periodicJob==undefined) {
-           periodicJob = setInterval(function(){main();},intervalMsec)
-        }
         ioFabricClient.wsControlConnection(
             {
                 'onNewConfigSignal':
@@ -35,9 +31,9 @@ ioFabricClient.init('iofabric', 54321, null,
             function(ioFabricClient) {
                 console.log("CONNECTED");
                 wsMessageConnected = true;
-                //if (periodicJob==undefined) {
-                  // periodicJob = setInterval(function(){main();},intervalMsec)
-                //}
+                if (periodicJob==undefined) {
+                  periodicJob = setInterval(main,intervalMsec)
+                }
             },
             {
                 'onMessages':
@@ -73,10 +69,12 @@ function fetchConfig() {
                         if(config) {
                             console.log(config);
                             if (JSON.stringify(config) !== JSON.stringify(currentConfig)) {
+                                console.log("Stringify");
                                 currentConfig = config;
-                                if(currentConfig.intervalSec) {
-                                    console.log(currentConfig.intervalSec);
-                                    intervalMsec = intervalSec * 1000;
+                                if(currentConfig.interval_sec) {
+                                    console.log("intervalSec:");
+                                    console.log(currentConfig.interval_sec);
+                                    intervalMsec = currentConfig.interval_sec * 1000;
                                 }
                             }
                         }
@@ -92,11 +90,16 @@ function fetchConfig() {
     );
 }
 
-function main() {
+var main = function() {
+    clearInterval(periodicJob);
     var imagedataScott = "26";
     sendMessage(Buffer(imagedataScott, 'binary'));
     console.log("sent");
+
+    console.log(intervalMsec);
+    periodicJob = setInterval(main, intervalMsec);
 }
+
 
 function sendMessage(contentData) {
     var ioMsg = ioFabricClient.ioMessage(
