@@ -31,19 +31,8 @@ ioFabricClient.init('iofabric', 54321, null,
                     function onMessagesSocket(messages) {
                          var imagedataScott = "26";
                          console.log("GoT message(s):len=%d", messages.length);
-                         console.log(typeof messages);
-                         console.log(messages);
+                         //console.log(messages);
                          sendMessage(messages);
-
-                        //if(messages) {
-                            // when getting new messages we store newest and delete oldest corresponding to configured limit
-                        //    for (var i = 0; i < messages.length; i++) {
-                         //       if (msgsBuffer.length > (messageLimit - 1)) {
-                          //          msgsBuffer.splice(0, (msgsBuffer.length - (messageLimit - 1)));
-                           //     }
-                            //    msgsBuffer.push(messages[i]);
-                            //}
-                        //}
                     },
                 'onMessageReceipt':
                     function(messageId, timestamp) { /* we received the receipt for posted msg */ },
@@ -200,7 +189,7 @@ function sendMessage(messages) {
             'contentdata' : Buffer(0),       }
     );
     console.log("send msg");
-    console.log(ioMsg);
+    //console.log(ioMsg);
     ioFabricClient.wsSendMessage(ioMsg);
 }
 
