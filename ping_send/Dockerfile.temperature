@@ -1,9 +1,0 @@
-FROM alpine:latest
-RUN apk add --update python python-dev py-pip build-base
-RUN pip install --upgrade pip
-RUN pip install virtualenv
-RUN pip install iofabric
-RUN pip install ws4py
-COPY . /src
-CMD ["python", "/src/index.py"]
-
