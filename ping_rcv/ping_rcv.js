@@ -178,16 +178,13 @@ function parsePropertyValue(propValue, dataEncoding) {
 }
 
 
-function sendMessage(message) {
-    var scottData = Buffer("666", 'binary');
-        //ioFabricClient.wsSendMessage(message);
-
+function sendMessage(messages) {
     var ioMsg = ioFabricClient.ioMessage(
         {
             'tag': '',
             'groupid': '',
-            'sequencenumber': 1,
-            'sequencetotal': 1,
+            'sequencenumber': messages[0].sequencenumber,
+            'sequencetotal': messages[0].sequencetotal,
             'priority': 0,
             'authid': '',
             'authgroup': '',
@@ -196,10 +193,10 @@ function sendMessage(message) {
             'previoushash': '',
             'nonce': '',
             'difficultytarget': 0,
-            'infotype': 'ping/payload',
-            'infoformat': 'binary',
+            'infotype': messages[0].infotype,
+            'infoformat': messages[0].infoformat,
             'contextdata': Buffer(0),
-            'contentdata' : scottData       }
+            'contentdata' : Buffer(0),       }
     );
     console.log("send msg");
     console.log(ioMsg);
